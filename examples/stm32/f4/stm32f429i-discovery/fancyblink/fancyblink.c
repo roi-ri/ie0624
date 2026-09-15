@@ -42,7 +42,6 @@ static void gpio_setup(void)
 int main(void)
 {
 	int i;
-
 	clock_setup();
 	gpio_setup();
 
@@ -51,11 +50,35 @@ int main(void)
 
 	/* Blink the LEDs (PG13 and PG14) on the board. */
 	while (1) {
-		/* Toggle LEDs. */
+      #if 0
+        /* Toggle LEDs. */
 		gpio_toggle(GPIOG, GPIO13 | GPIO14);
 		for (i = 0; i < 6000000; i++) { /* Wait a bit. */
 			__asm__("nop");
 		}
+    #endif
+
+       // #if 0
+        /*Sin utilizar gpio_toggle*/
+        gpio_set(GPIOG, GPIO13);
+
+        for (i = 0; i < 6000000; i++){
+            __asm__("nop");
+        }
+        gpio_clear(GPIOG, GPIO13);
+        for (i = 0; i < 6000000; i++){
+            __asm__("nop");
+        }
+        gpio_set(GPIOG, GPIO14);
+
+        for (i = 0; i < 6000000; i++){
+            __asm__("nop");
+        }
+        gpio_clear(GPIOG, GPIO14);
+        for (i = 0; i < 6000000; i++){
+            __asm__("nop");
+        }
+       // #endif
 	}
 
 	return 0;
