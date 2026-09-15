@@ -22,7 +22,7 @@
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
 
-static void gpio_setup(void)
+static int gpio_setup(void)
 {
 	/* Enable GPIOD clock. */
 	/* Manually: */
@@ -35,16 +35,16 @@ static void gpio_setup(void)
 	/* GPIOG_CRH = (GPIO_CNF_OUTPUT_PUSHPULL << 2); */
 	/* GPIOG_CRH |= (GPIO_MODE_OUTPUT_2_MHZ << 2); */
 	/* Using API functions: */
-	gpio_mode_setup(GPIOG, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO13);
+	gpio_mode_setup(GPIOG, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO14);
 }
 
 int main(void)
 {
-	int i;
+	volatile int i;
 
 	gpio_setup();
 
-	/* Blink the LED (PG13) on the board. */
+	/* Blink the LED (PG13) on the board. */ //Changed to GPIO14
 	while (1) {
 		/* Manually: */
 #if 0
@@ -71,8 +71,9 @@ int main(void)
 #endif
 
 		/* Using API function gpio_toggle(): */
-		gpio_toggle(GPIOG, GPIO13);	/* LED on/off */
-		for (i = 0; i < 1000000; i++) {	/* Wait a bit. */
+		gpio_toggle(GPIOG, GPIO14);	/* LED on/off */
+		//Se reduce la velocidad del blink, inicialmente 1000000 con el arreglo 100000
+		for (i = 0; i < 100000; i++) {	/* Wait a bit. */
 			__asm__("nop");
 		}
 	}
